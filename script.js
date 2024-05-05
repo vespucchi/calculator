@@ -1,6 +1,10 @@
 let firstNumber = 0;
 let secondNumber = 0;
 let total = 0;
+let operator;
+let nextOperator;
+
+const oneNumberOperators = ["1/x", "pow", "sqrt"];
 
 const buttons = document.querySelectorAll("button");
 const displayTotal = document.querySelector(".total");
@@ -15,8 +19,10 @@ buttons.forEach((button) => {
             }
             updateDisplay(button.value);
         } else {
-            const operator = button.value;
+            if(!operator) operator = button.value;
             operate(button, operator);
+            operator = button.value;
+            nextOperator = operator;
         }
     })
 })
@@ -25,6 +31,7 @@ buttons.forEach((button) => {
 function operate(button, operator) {
     if(button.classList.contains("oneNumber")) {
         displayTotal.textContent = operateOneNumber(displayTotal.textContent, operator);
+        updateNumber(displayTotal.textContent);
     } else if(button.classList.contains("twoNumber") && total == 0){
         updateNumber(displayTotal.textContent);
 
@@ -35,9 +42,7 @@ function operate(button, operator) {
             secondNumber = 0;
         }
         else total = firstNumber;
-
-        updateStepsDisplay(firstNumber, operator)
-    }
+    } else if(button.classList.contains("clear")) clear(operator);
 }
 
 
@@ -48,8 +53,13 @@ function updateNumber(number) {
 
 function updateStepsDisplay(number, operator) {
     const display = document.querySelector(".steps");
-
-    display.textContent = `${number} ${operator}`;
+    
+    if(oneNumberOperators.includes(operator)) {
+        if(operator == "1/x") display.textContent = `1 / ${number} =`;
+        else display.textContent = `${operator}(${number}) =`;
+    } else {
+        display.textContent = `${number} ${operator}`;
+    }
 }
 
 
@@ -63,6 +73,26 @@ function updateDisplay(number) {
             displayTotal.textContent = 
                 `${displayTotal.textContent}${number}`;
         } else return
+    }
+}
+
+
+function clear(operator) {
+    switch (operator) {
+        case "CE":
+            displayTotal.textContent = 0;
+            firstNumber = 0;
+            secondNumber = 0;
+            total = 0;
+        case "C":
+            displayTotal.textContent = 0;
+        case "bsp":
+            if(displayTotal.textContent.length > 1) {
+                const newValue = displayTotal.textContent.slice(0, -1);
+                displayTotal.textContent = newValue;
+            } else if(displayTotal.textContent.length == 1 && displayTotal.textContent != 0) {
+                displayTotal.textContent = 0;
+            }
     }
 }
 
@@ -98,18 +128,6 @@ function operateOneNumber(firstNumber, operator) {
             return addDecimal(firstNumber)
     }
 } 
-
-
-function clear(operator) {
-    switch (operator) {
-        case "CE":
-            return ;
-        case "C":
-            return ;
-        case "bsp":
-            return ;
-    }
-}
 
 
 function add(a, b) { return a + b };
