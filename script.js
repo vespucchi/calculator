@@ -1,43 +1,54 @@
 let firstNumber = 0;
-let operator;
-let secondNumber;
-let total;
+let secondNumber = 0;
+let total = 0;
 
-let buttons = document.querySelectorAll("button");
-let displayTotal = document.querySelector(".total");
+const buttons = document.querySelectorAll("button");
+const displayTotal = document.querySelector(".total");
+const displaySteps = document.querySelector(".steps");
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
         if(isNumber) {
+            if(total) {
+                displayTotal.textContent = 0;
+                total = 0;
+            }
             updateDisplay(button.value);
         } else {
-            operator = button.value;
-            operate(button);
+            const operator = button.value;
+            operate(button, operator);
         }
     })
 })
 
 
-function operate(button) {
+function operate(button, operator) {
     if(button.classList.contains("oneNumber")) {
-        firstNumber = displayTotal.textContent;
-        total = operateOneNumber(firstNumber, operator);
-        displayTotal.textContent = total;
-    } else if(button.classList.contains("twoNumber")){
-        firstNumber = total;
+        displayTotal.textContent = operateOneNumber(displayTotal.textContent, operator);
+    } else if(button.classList.contains("twoNumber") && total == 0){
+        updateNumber(displayTotal.textContent);
+        displaySteps.textContent = `${firstNumber} ${operator}`;
+
         total = operateTwoNumbers(firstNumber, operator, secondNumber);
     }
 }
 
 
+function updateNumber(number) {
+    return firstNumber ? secondNumber = number : firstNumber = number;
+}
+
+
 function updateDisplay(number) {
     if(displayTotal.textContent == 0) {
-        if(number != 0) displayTotal.textContent = number;
+        if(number != 0) {
+            displayTotal.textContent = number; 
+        }
     } else {
         if(displayTotal.textContent.length < 10) {
             displayTotal.textContent = 
                 `${displayTotal.textContent}${number}`;
-        }
+        } else return
     }
 }
 
@@ -96,4 +107,4 @@ function oneDividedBy(a) { return 1 / a };
 function power(a) { return a ** 2 };
 function squareRoot(a) { return Math.sqrt(a) };
 function changeOperator(a) { return a !== 0 ? a * (-1) : a};
-function addDecimal(a) { return displayTotal.textContent = `${a}.`}
+function addDecimal(a) { return `${a}.`}
