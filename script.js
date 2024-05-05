@@ -27,9 +27,18 @@ function operate(button, operator) {
         displayTotal.textContent = operateOneNumber(displayTotal.textContent, operator);
     } else if(button.classList.contains("twoNumber") && total == 0){
         updateNumber(displayTotal.textContent);
-        displaySteps.textContent = `${firstNumber} ${operator}`;
 
-        total = operateTwoNumbers(firstNumber, operator, secondNumber);
+        if(secondNumber) {
+            firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
+            total = firstNumber;
+            displayTotal.textContent = total;
+            secondNumber = 0;
+        }
+        else total = firstNumber;
+
+        console.log(firstNumber);
+        console.log(secondNumber);
+        console.log(total);
     }
 }
 
@@ -56,15 +65,15 @@ function updateDisplay(number) {
 function operateTwoNumbers(firstNumber, operator, secondNumber) {
     switch (operator) {
         case "+":
-            return add(firstNumber, secondNumber);
+            return add(+firstNumber, +secondNumber);
         case "-":
-            return subtract(firstNumber, secondNumber);
+            return subtract(+firstNumber, +secondNumber);
         case "*":
-            return multiply(firstNumber, secondNumber);
+            return multiply(+firstNumber, +secondNumber);
         case "/":
-            return divide(firstNumber, secondNumber);
+            return divide(+firstNumber, +secondNumber);
         case "%":
-            return modulo(firstNumber, secondNumber);
+            return modulo(+firstNumber, +secondNumber);
     }
 }
 
@@ -72,13 +81,13 @@ function operateTwoNumbers(firstNumber, operator, secondNumber) {
 function operateOneNumber(firstNumber, operator) {
     switch (operator) {
         case "1/x":
-            return oneDividedBy(firstNumber);
+            return oneDividedBy(+firstNumber);
         case "pow":
-            return power(firstNumber);
+            return power(+firstNumber);
         case "sqrt":
-            return squareRoot(firstNumber);
+            return squareRoot(+firstNumber);
         case "+/-":
-            return changeOperator(firstNumber);
+            return changeOperator(+firstNumber);
         case ".":
             if(displayTotal.textContent.includes(".")) return displayTotal.textContent;
             return addDecimal(firstNumber)
