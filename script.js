@@ -36,15 +36,20 @@ function operate(button, operator) {
         }
         else total = firstNumber;
 
-        console.log(firstNumber);
-        console.log(secondNumber);
-        console.log(total);
+        updateStepsDisplay(firstNumber, operator)
     }
 }
 
 
 function updateNumber(number) {
     return firstNumber ? secondNumber = number : firstNumber = number;
+}
+
+
+function updateStepsDisplay(number, operator) {
+    const display = document.querySelector(".steps");
+
+    display.textContent = `${number} ${operator}`;
 }
 
 
