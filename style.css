@@ -16,17 +16,27 @@ body {
     display: flex;
     flex-direction: column;
     width: 20vw;
-    height: 22vw;
+    height: 369px;
     border-radius: 10px;
     background-color: #202020;
 }
 
 .display {
     text-align: end;
+    padding: 8px 10px;
+}
+
+.steps {
+    color: grey;
+    font-size: 14px;
+    padding-right: 10px;
+    font-weight: 550;
+}
+
+.total {
     color: white;
     font-size: 48px;
     font-weight: 550;
-    padding: 8px 10px;
 }
 
 .buttons {
@@ -34,6 +44,9 @@ body {
     flex-wrap: wrap;
     gap: 2px;
     padding: 0px 5px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .button {
