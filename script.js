@@ -20,13 +20,15 @@ buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
         if(isNumber) {
-            if(button.textContent != 0) {
-                if(displayTotal.textContent == 0) displayTotal.textContent = button.textContent;
-                else if(displayTotal.textContent.length < 10) displayTotal.textContent= `${displayTotal.textContent}${button.textContent}`;
-            } 
+            if(displayTotal.textContent == 0) {
+                if(button.textContent != 0) displayTotal.textContent = button.textContent;
+            } else {
+                if(displayTotal.textContent.length < 10) {
+                    displayTotal.textContent = 
+                        `${displayTotal.textContent}${button.textContent}`;
+            }
         }
-        console.log(button.textContent);
-    })
+    }})
 })
 
 
