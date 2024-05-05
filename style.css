@@ -49,28 +49,29 @@ body {
     user-select: none; /* Standard syntax */
 }
 
-.button {
+button {
     background-color: #323232;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
     border-radius: 5px;
     height: 44.5px;
     width: 76px;
     font-size: 14px;
 }
 
-.button:hover {
+button:hover {
     background-color: #3B3B3B;
 }
 
-.lighter {
+.number {
     background-color: #3B3B3B;
     font-size: 18px;
 }
 
-.lighter:hover {
+.number:hover {
     background-color: #323232;
 }
 
@@ -80,7 +81,7 @@ body {
     color: #323232;
 }
 
-.equal:hover {
+#equal:hover {
     background-color: #92B8A8;
 }
 
