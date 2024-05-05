@@ -8,9 +8,27 @@ function power(a) { return a ** 2 };
 function squareRoot(a) { return Math.sqrt(a) };
 function changeOperator(a) { return a !== 0 ? a * (-1) : a};
 
+
 let firstNumber = 0;
 let operator;
 let secondNumber;
+let total = 0;
+
+let buttons = document.querySelectorAll(".button");
+let displayTotal = document.querySelector(".total");
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        let isNumber = button.classList.contains("number");
+        if(isNumber) {
+            if(button.textContent != 0) {
+                if(displayTotal.textContent == 0) displayTotal.textContent = button.textContent;
+                else if(displayTotal.textContent.length < 10) displayTotal.textContent= `${displayTotal.textContent}${button.textContent}`;
+            } 
+        }
+        console.log(button.textContent);
+    })
+})
+
 
 function operateTwoNumbers(firstNumber, operator, secondNumber) {
     switch (operator) {
