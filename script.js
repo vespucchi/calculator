@@ -1,35 +1,45 @@
-function add(a, b) { return a + b };
-function subtract(a, b) { return a - b };
-function multiply(a, b) { return a * b };
-function divide(a, b) { return a / b };
-function modulo(a, b) { return a % b };
-function oneDividedBy(a) { return 1 / a };
-function power(a) { return a ** 2 };
-function squareRoot(a) { return Math.sqrt(a) };
-function changeOperator(a) { return a !== 0 ? a * (-1) : a};
-
-
 let firstNumber = 0;
 let operator;
 let secondNumber;
-let total = 0;
+let total;
 
-let buttons = document.querySelectorAll(".button");
+let buttons = document.querySelectorAll("button");
 let displayTotal = document.querySelector(".total");
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
         if(isNumber) {
-            if(displayTotal.textContent == 0) {
-                if(button.textContent != 0) displayTotal.textContent = button.textContent;
-            } else {
-                if(displayTotal.textContent.length < 10) {
-                    displayTotal.textContent = 
-                        `${displayTotal.textContent}${button.textContent}`;
-            }
+            updateDisplay(button.value);
+        } else {
+            operator = button.value;
+            operate(button);
         }
-    }})
+    })
 })
+
+
+function operate(button) {
+    if(button.classList.contains("oneNumber")) {
+        firstNumber = displayTotal.textContent;
+        total = operateOneNumber(firstNumber, operator);
+        displayTotal.textContent = total;
+    } else if(button.classList.contains("twoNumber")){
+        firstNumber = total;
+        total = operateTwoNumbers(firstNumber, operator, secondNumber);
+    }
+}
+
+
+function updateDisplay(number) {
+    if(displayTotal.textContent == 0) {
+        if(number != 0) displayTotal.textContent = number;
+    } else {
+        if(displayTotal.textContent.length < 10) {
+            displayTotal.textContent = 
+                `${displayTotal.textContent}${number}`;
+        }
+    }
+}
 
 
 function operateTwoNumbers(firstNumber, operator, secondNumber) {
@@ -56,8 +66,11 @@ function operateOneNumber(firstNumber, operator) {
             return power(firstNumber);
         case "sqrt":
             return squareRoot(firstNumber);
-        case "+-":
+        case "+/-":
             return changeOperator(firstNumber);
+        case ".":
+            if(displayTotal.textContent.includes(".")) return displayTotal.textContent;
+            return addDecimal(firstNumber)
     }
 } 
 
@@ -72,3 +85,15 @@ function clear(operator) {
             return ;
     }
 }
+
+
+function add(a, b) { return a + b };
+function subtract(a, b) { return a - b };
+function multiply(a, b) { return a * b };
+function divide(a, b) { return a / b };
+function modulo(a, b) { return a % b };
+function oneDividedBy(a) { return 1 / a };
+function power(a) { return a ** 2 };
+function squareRoot(a) { return Math.sqrt(a) };
+function changeOperator(a) { return a !== 0 ? a * (-1) : a};
+function addDecimal(a) { return displayTotal.textContent = `${a}.`}
