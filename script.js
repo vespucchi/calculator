@@ -103,9 +103,13 @@ function clear(operator) {
             operator = "";
         case "bsp":
             if(displayTotal.textContent.length > 1) {
-                const newValue = displayTotal.textContent.slice(0, -1);
-                displayTotal.textContent = newValue;
-            } else if(displayTotal.textContent.length == 1 && displayTotal.textContent != 0) {
+                if(displayTotal.textContent.length == 2 && displayTotal.textContent.includes("-")) {
+                    displayTotal.textContent = 0;
+                } else {
+                    const newValue = displayTotal.textContent.slice(0, -1);
+                    displayTotal.textContent = newValue;    
+                }
+            } else if(displayTotal.textContent.length == 1 && displayTotal.textContent != 0 ) {
                 displayTotal.textContent = 0;
             }
     }
