@@ -92,15 +92,20 @@ function updateDisplay(number) {
 }
 
 
-function clear(operator) {
-    switch (operator) {
+function clear(clearOperator) {
+    console.log(clearOperator);
+
+    switch (clearOperator) {
         case "CE":
             displayTotal.textContent = 0;
+            console.log(firstNumber, operator, secondNumber);
+            break;
         case "C":
             displayTotal.textContent = 0;
             firstNumber = 0;
             secondNumber = 0;
             operator = "";
+            break;
         case "bsp":
             if(displayTotal.textContent.length > 1) {
                 if(displayTotal.textContent.length == 2 && displayTotal.textContent.includes("-")) {
@@ -112,6 +117,7 @@ function clear(operator) {
             } else if(displayTotal.textContent.length == 1 && displayTotal.textContent != 0 ) {
                 displayTotal.textContent = 0;
             }
+            break;
     }
 }
 
