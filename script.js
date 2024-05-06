@@ -9,48 +9,63 @@ const oneNumberOperators = ["1/x", "pow", "sqrt"];
 
 const buttons = document.querySelectorAll("button");
 const displayTotal = document.querySelector(".total");
-const displaySteps = document.querySelector(".steps");
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
         if(isNumber) {
+            if(operator == "equal") {
+                operator = "C";
+                clear(operator);
+            }
+
             if(!displayCleared) {
                 displayTotal.textContent = 0;
                 displayCleared = true;
             }
-            updateDisplay(button.value);
+
+            updateDisplay(button.value)
         } else {
             if(button.classList.contains("clear")) {
-                clear(button.value);
                 displayCleared = true;
+                clear(button.value);
             } 
             else if(button.classList.contains("oneNumber")) {
+                if(operator == "equal") {
+                    operator = 0;
+                }
+                
                 displayTotal.textContent = 
-                operateOneNumber(displayTotal.textContent, button.value);
+                    operateOneNumber(displayTotal.textContent, button.value);
+
                 displayCleared = true;
             }
-            else if(button.classList.contains("twoNumber")) {
+            else if(button.classList.contains("twoNumber") || button.getAttribute("id") == "equal") {
                 if(!firstNumber) {
                     updateNumber(displayTotal.textContent);
                     operator = button.value;
                     displayCleared = false;
-                    console.log(firstNumber, operator, secondNumber, displayCleared);
+                    console.log("t1")
                 } else {
                     if(displayCleared) {
                         updateNumber(displayTotal.textContent);
-                        console.log(firstNumber, operator, secondNumber);
                         firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
                         displayCleared = false;
                         operator = button.value;
                         secondNumber = 0;
                         displayTotal.textContent = firstNumber;
-                        console.log(firstNumber, operator, secondNumber, displayCleared);
+
+                        if(button.getAttribute("id") == "equal") {
+                            firstNumber = 0;
+                        }
+                        console.log("t2");
                     } else {
                         operator = button.value;
-                        console.log(firstNumber, operator, secondNumber, displayCleared);
+                        console.log("t3");
                     } 
                 }
-            }            
+            }
+            
+            console.log(firstNumber, operator, secondNumber);
         }
     })
 })
@@ -63,18 +78,6 @@ function operate(button, operator) {
 
 function updateNumber(number) {
     return firstNumber ? secondNumber = number : firstNumber = number;
-}
-
-
-function updateStepsDisplay(number, operator) {
-    const display = document.querySelector(".steps");
-    
-    if(oneNumberOperators.includes(operator)) {
-        if(operator == "1/x") display.textContent = `1 / ${number} =`;
-        else display.textContent = `${operator}(${number}) =`;
-    } else {
-        display.textContent = `${number} ${operator}`;
-    }
 }
 
 
@@ -93,12 +96,9 @@ function updateDisplay(number) {
 
 
 function clear(clearOperator) {
-    console.log(clearOperator);
-
     switch (clearOperator) {
         case "CE":
             displayTotal.textContent = 0;
-            console.log(firstNumber, operator, secondNumber);
             break;
         case "C":
             displayTotal.textContent = 0;
