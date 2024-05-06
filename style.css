@@ -44,8 +44,8 @@ body {
     display: flex;
     flex-wrap: wrap;
     flex: auto;
-    gap: 2px;
     height: 85%;
+    gap: 2px;
     margin-bottom: 2px;
     justify-content: center;
     -webkit-user-select: none; /* Safari */
@@ -64,6 +64,7 @@ button {
     width: 24%;
     height: 16%;
     font-size: 14px;
+    margin: 0;
 }
 
 button:hover {
