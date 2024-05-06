@@ -120,8 +120,12 @@ function clear(clearOperator) {
                 if(displayTotal.textContent.length == 2 && displayTotal.textContent.includes("-")) {
                     displayTotal.textContent = 0;
                 } else {
-                    const newValue = displayTotal.textContent.slice(0, -1);
-                    displayTotal.textContent = newValue;    
+                    if(displayTotal.textContent.includes("e")) {
+                        displayTotal.textContent = 0;
+                    } else {
+                        const newValue = displayTotal.textContent.slice(0, -1);
+                        displayTotal.textContent = newValue;    
+                    }
                 }
             } else if(displayTotal.textContent.length == 1 && displayTotal.textContent != 0 ) {
                 displayTotal.textContent = 0;
