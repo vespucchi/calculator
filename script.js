@@ -1,8 +1,9 @@
 let firstNumber = 0;
 let secondNumber = 0;
-let total = 0;
+let rollingTotal = 0;
 let operator;
 let nextOperator;
+let displayCleared = false;
 
 const oneNumberOperators = ["1/x", "pow", "sqrt"];
 
@@ -13,36 +14,50 @@ buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
         if(isNumber) {
-            if(total) {
+            if(!displayCleared) {
                 displayTotal.textContent = 0;
-                total = 0;
+                displayCleared = true;
             }
             updateDisplay(button.value);
         } else {
-            if(!operator) operator = button.value;
-            operate(button, operator);
-            operator = button.value;
-            nextOperator = operator;
+            if(button.classList.contains("clear")) {
+                clear(button.value);
+                displayCleared = true;
+            } 
+            else if(button.classList.contains("oneNumber")) {
+                displayTotal.textContent = 
+                operateOneNumber(displayTotal.textContent, button.value);
+                displayCleared = true;
+            }
+            else if(button.classList.contains("twoNumber")) {
+                if(!firstNumber) {
+                    updateNumber(displayTotal.textContent);
+                    operator = button.value;
+                    displayCleared = false;
+                    console.log(firstNumber, operator, secondNumber, displayCleared);
+                } else {
+                    if(displayCleared) {
+                        updateNumber(displayTotal.textContent);
+                        console.log(firstNumber, operator, secondNumber);
+                        firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
+                        displayCleared = false;
+                        operator = button.value;
+                        secondNumber = 0;
+                        displayTotal.textContent = firstNumber;
+                        console.log(firstNumber, operator, secondNumber, displayCleared);
+                    } else {
+                        operator = button.value;
+                        console.log(firstNumber, operator, secondNumber, displayCleared);
+                    } 
+                }
+            }            
         }
     })
 })
 
 
 function operate(button, operator) {
-    if(button.classList.contains("oneNumber")) {
-        displayTotal.textContent = operateOneNumber(displayTotal.textContent, operator);
-        updateNumber(displayTotal.textContent);
-    } else if(button.classList.contains("twoNumber") && total == 0){
-        updateNumber(displayTotal.textContent);
-
-        if(secondNumber) {
-            firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
-            total = firstNumber;
-            displayTotal.textContent = total;
-            secondNumber = 0;
-        }
-        else total = firstNumber;
-    } else if(button.classList.contains("clear")) clear(operator);
+    
 }
 
 
@@ -81,11 +96,11 @@ function clear(operator) {
     switch (operator) {
         case "CE":
             displayTotal.textContent = 0;
-            firstNumber = 0;
-            secondNumber = 0;
-            total = 0;
         case "C":
             displayTotal.textContent = 0;
+            firstNumber = 0;
+            secondNumber = 0;
+            operator = "";
         case "bsp":
             if(displayTotal.textContent.length > 1) {
                 const newValue = displayTotal.textContent.slice(0, -1);
@@ -113,19 +128,19 @@ function operateTwoNumbers(firstNumber, operator, secondNumber) {
 }
 
 
-function operateOneNumber(firstNumber, operator) {
+function operateOneNumber(currentDisplayNumber, operator) {
     switch (operator) {
         case "1/x":
-            return oneDividedBy(+firstNumber);
+            return oneDividedBy(+currentDisplayNumber);
         case "pow":
-            return power(+firstNumber);
+            return power(+currentDisplayNumber);
         case "sqrt":
-            return squareRoot(+firstNumber);
+            return squareRoot(+currentDisplayNumber);
         case "+/-":
-            return changeOperator(+firstNumber);
+            return changeOperator(+currentDisplayNumber);
         case ".":
             if(displayTotal.textContent.includes(".")) return displayTotal.textContent;
-            return addDecimal(firstNumber)
+            return addDecimal(currentDisplayNumber)
     }
 } 
 
