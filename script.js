@@ -5,83 +5,92 @@ let operator;
 let nextOperator;
 let displayCleared = false;
 
-const oneNumberOperators = ["1/x", "pow", "sqrt"];
-
 const buttons = document.querySelectorAll("button");
 const displayTotal = document.querySelector(".total");
+
+document.addEventListener("keypress", (button) => {
+    let isNumber = isFinite(button.key);
+
+    if(isNumber) {
+        handleNumber(button.key);
+    }
+})
+
+
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         let isNumber = button.classList.contains("number");
+
         if(isNumber) {
-            if(operator == "equal") {
-                operator = "C";
-                clear(operator);
-            }
-
-            if(!displayCleared) {
-                displayTotal.textContent = 0;
-                displayCleared = true;
-            }
-
-            updateDisplay(button.value);
+            handleNumber(button.value);
         } else {
-            if(button.classList.contains("clear")) {
-                displayCleared = true;
-                clear(button.value);
-            } 
-            else if(button.classList.contains("oneNumber")) {
-                if(operator == "equal") {
-                    operator = 0;
-                }
-
-                displayTotal.textContent = 
-                    operateOneNumber(displayTotal.textContent, button.value);
-
-                displayCleared = true;
-            }
-            else if(button.classList.contains("twoNumber") || button.getAttribute("id") == "equal") {
-                if(!firstNumber) {
-                    updateNumber(displayTotal.textContent);
-                    operator = button.value;
-                    displayCleared = false;
-
-                    if(button.getAttribute("id") == "equal") {
-                        if(displayTotal.textContent[displayTotal.textContent.length - 1] == ".") {
-                            let updatedString = displayTotal.textContent.slice(0, displayTotal.textContent.length - 1);
-                            displayTotal.textContent = updatedString;
-                            console.log("testtt");
-                                
-                        }
-                    }
-                    console.log("t1")
-                } else {
-                    if(displayCleared) {
-                        updateNumber(displayTotal.textContent);
-                        firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
-                        displayCleared = false;
-                        operator = button.value;
-                        secondNumber = 0;
-                        displayTotal.textContent = firstNumber;
-
-                        if(button.getAttribute("id") == "equal") {
-                            firstNumber = 0;
-                        }
-                        console.log("t2");
-                    } else {
-                        operator = button.value;
-                        console.log("t3");
-                    } 
-                }
-            }
-            
-            console.log(firstNumber, operator, secondNumber);
+            handleOperator(button);
         }
     })
 })
 
 
-function operate(button, operator) {
-    
+function handleOperator(button) {
+    if(button.classList.contains("clear")) {
+        displayCleared = true;
+        clear(button.value);
+    } 
+    else if(button.classList.contains("oneNumber")) {
+        if(operator == "equal") {
+            operator = 0;
+        }
+
+        displayTotal.textContent = 
+            operateOneNumber(displayTotal.textContent, button.value);
+
+        displayCleared = true;
+    }
+    else if(button.classList.contains("twoNumber") || button.getAttribute("id") == "equal") {
+        if(!firstNumber) {
+            updateNumber(displayTotal.textContent);
+            operator = button.value;
+            displayCleared = false;
+
+            if(button.getAttribute("id") == "equal") {
+                if(displayTotal.textContent[displayTotal.textContent.length - 1] == ".") {
+                    let updatedString = displayTotal.textContent.slice(0, displayTotal.textContent.length - 1);
+                    displayTotal.textContent = updatedString;
+                    console.log("testtt");
+                        
+                }
+            }
+        } else {
+            if(displayCleared) {
+                updateNumber(displayTotal.textContent);
+                firstNumber = operateTwoNumbers(firstNumber, operator, secondNumber);
+                displayCleared = false;
+                operator = button.value;
+                secondNumber = 0;
+                displayTotal.textContent = firstNumber;
+
+                if(button.getAttribute("id") == "equal") {
+                    firstNumber = 0;
+                }
+            } else {
+                operator = button.value;
+            } 
+        }
+    } 
+}
+
+
+function handleNumber(number) {
+    if(operator == "equal") {
+        operator = "C";
+        clear(operator);
+    }
+
+    if(!displayCleared) {
+        displayTotal.textContent = 0;
+        displayCleared = true;
+    }
+
+    updateDisplay(number);
 }
 
 
@@ -176,7 +185,12 @@ function toPrecise(result) {
 function add(a, b) { return toPrecise(+(a + b)) };
 function subtract(a, b) { return toPrecise(+(a - b)) };
 function multiply(a, b) { return toPrecise(a * b) };
-function divide(a, b) { return toPrecise(+(a / b)) };
+function divide(a, b) {
+    if(b == 0) {
+        setTimeout(() => { clear("C") }, 1000);
+        return displayTotal.textContent = "lmao";
+    } else return toPrecise(+(a / b));
+};
 function modulo(a, b) { return toPrecise(+(a % b)) };
 function oneDividedBy(a) { return toPrecise(+(1 / a)) };
 function power(a) { return toPrecise(+(a ** 2)) };
