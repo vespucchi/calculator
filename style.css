@@ -23,7 +23,8 @@ body {
 
 .display {
     text-align: end;
-    padding: 8px 10px;
+    height: 15%;
+    padding: 10px;
 }
 
 .steps {
@@ -42,8 +43,11 @@ body {
 .buttons {
     display: flex;
     flex-wrap: wrap;
+    flex: auto;
     gap: 2px;
-    padding: 0px 5px;
+    height: 85%;
+    margin-bottom: 2px;
+    justify-content: center;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
@@ -57,8 +61,8 @@ button {
     align-items: center;
     border: none;
     border-radius: 5px;
-    height: 44.5px;
-    width: 76px;
+    width: 24%;
+    height: 16%;
     font-size: 14px;
 }
 
