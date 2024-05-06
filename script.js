@@ -23,7 +23,7 @@ buttons.forEach((button) => {
                 displayCleared = true;
             }
 
-            updateDisplay(button.value)
+            updateDisplay(button.value);
         } else {
             if(button.classList.contains("clear")) {
                 displayCleared = true;
@@ -33,7 +33,7 @@ buttons.forEach((button) => {
                 if(operator == "equal") {
                     operator = 0;
                 }
-                
+
                 displayTotal.textContent = 
                     operateOneNumber(displayTotal.textContent, button.value);
 
@@ -44,6 +44,15 @@ buttons.forEach((button) => {
                     updateNumber(displayTotal.textContent);
                     operator = button.value;
                     displayCleared = false;
+
+                    if(button.getAttribute("id") == "equal") {
+                        if(displayTotal.textContent[displayTotal.textContent.length - 1] == ".") {
+                            let updatedString = displayTotal.textContent.slice(0, displayTotal.textContent.length - 1);
+                            displayTotal.textContent = updatedString;
+                            console.log("testtt");
+                                
+                        }
+                    }
                     console.log("t1")
                 } else {
                     if(displayCleared) {
@@ -152,16 +161,21 @@ function operateOneNumber(currentDisplayNumber, operator) {
             if(displayTotal.textContent.includes(".")) return displayTotal.textContent;
             return addDecimal(currentDisplayNumber)
     }
-} 
+}
 
 
-function add(a, b) { return a + b };
-function subtract(a, b) { return a - b };
-function multiply(a, b) { return a * b };
-function divide(a, b) { return a / b };
-function modulo(a, b) { return a % b };
-function oneDividedBy(a) { return 1 / a };
-function power(a) { return a ** 2 };
-function squareRoot(a) { return Math.sqrt(a) };
-function changeOperator(a) { return a !== 0 ? a * (-1) : a};
+function toPrecise(result) {
+    return String(result).length > 10 ? result.toPrecision(6) : result;
+}
+
+
+function add(a, b) { return toPrecise(+(a + b)) };
+function subtract(a, b) { return toPrecise(+(a - b)) };
+function multiply(a, b) { return toPrecise(a * b) };
+function divide(a, b) { return toPrecise(+(a / b)) };
+function modulo(a, b) { return toPrecise(+(a % b)) };
+function oneDividedBy(a) { return toPrecise(+(1 / a)) };
+function power(a) { return toPrecise(+(a ** 2)) };
+function squareRoot(a) { return toPrecise(+(Math.sqrt(a))) };
+function changeOperator(a) { return a !== 0 ? toPrecise(+(a * (-1))) : toPrecise(+(a)) };
 function addDecimal(a) { return `${a}.`}
